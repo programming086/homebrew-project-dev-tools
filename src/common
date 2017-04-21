@@ -1,0 +1,31 @@
+#!/bin/bash
+
+ERROR='\033[41;1;37m'
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+if [[ -z "$PROJECT_ROOT_DIR" || ! -d "$PROJECT_ROOT_DIR" ]]; then
+    printf "⚠️ Make sure you have ${ERROR}PROJECT_ROOT_DIR${NC} set\n"
+    exit 1
+fi
+
+for arg in "$@"; do
+    [[ "$arg" == "-v" ]] && VERBOSE_MODE=1;
+done
+
+function run()
+{
+    if [[ $VERBOSE_MODE -eq 1 ]]; then
+        echo "$" "$@"
+        eval $(printf '%q ' "$@")
+    else
+        eval $(printf '%q ' "$@") &> /dev/null
+        if [ $? -ne 0 ]; then
+            printf "${ERROR}⚠️ Error${NC}\n"
+            exit 1
+        else
+            printf "✓\n"
+        fi
+    fi
+}

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source src/common 2> /dev/null || source $(brew --prefix project-dev-tools)/common;
+
+printf "> brew update... "
+run brew update
+
+printf "> reinstalling project-dev-tools... "
+run brew reinstall project-dev-tools;
+
+printf "🎉 Update Complete!\n"
+
+exit 0

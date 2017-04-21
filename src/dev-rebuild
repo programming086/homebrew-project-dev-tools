@@ -1,0 +1,24 @@
+#!/bin/bash
+
+source src/common 2> /dev/null || source $(brew --prefix project-dev-tools)/common;
+
+APP_NAME="${1:-*}"
+
+for app in $PROJECT_ROOT_DIR/app/$APP_NAME/; do
+    [[ ! -d "$app" ]] && continue;
+
+    name=$(basename "$app")
+    printf "💾 ${GREEN}$name${NC} ${BLUE}[$app]${NC}\n"
+
+    printf "> running composer install... "
+    run composer install -d "$app"
+
+    printf "> clearing cache... "
+    run rm -fr "${app}cache/*"
+
+    printf "\n"
+done
+
+printf "🎉 Rebuild Complete!\n"
+
+exit 0
