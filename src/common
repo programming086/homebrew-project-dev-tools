@@ -11,7 +11,14 @@ if [[ -z "$PROJECT_ROOT_DIR" || ! -d "$PROJECT_ROOT_DIR" ]]; then
 fi
 
 for arg in "$@"; do
-    [[ "$arg" == "-v" ]] && VERBOSE_MODE=1;
+    shift
+
+    if [[ "$arg" == "-v" ]]; then
+        VERBOSE_MODE=1
+        continue # remove `-v` from args
+    fi
+
+    set -- "$@" "$arg"
 done
 
 function run()
